@@ -9,7 +9,7 @@
 #include <locale.h>
 
 #define MENU_SIZE 75
-
+//hello
 int mapW = -1;
 int mapH = -1;
 int mines_count = -1;
