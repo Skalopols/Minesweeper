@@ -9,7 +9,7 @@
 #include <locale.h>
 
 #define MENU_SIZE 75
-//hello
+
 int mapW = -1;
 int mapH = -1;
 int mines_count = -1;
@@ -513,6 +513,11 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
         if (mines == closedCell) {
             fail = 2;
+            for (int i = 0; i < mapW; i++) {
+                for (int j = 0; j < mapH; j++) {
+                    map[i][j].flag = 1;
+                }
+            }
         }
         Game_Show();
         Menu_Show();
@@ -522,7 +527,6 @@ int main(void)
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    //CHECK VICTORY
     glfwTerminate();
     freeMap(mapW);
     return 0;
