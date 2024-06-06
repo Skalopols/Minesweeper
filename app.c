@@ -236,12 +236,26 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
             OpenFields(x, y);
         }
     }
-    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && ypos < MENU_SIZE) {
+    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && ypos < MENU_SIZE && fail != 2) {
         if ((0.5 * mapW * 50 * 0.3 <= xpos && xpos <= 0.5 * mapW * 50 * 0.7) && (10 <= ypos && ypos <= 55)) {
             printf("Left button\n");
+            for (int i = 0; i < mapW; i++) {
+                for (int j = 0; j < mapH; j++) {
+                    if (Help(i, j))
+                        break;
+                }
+            }
         }
         else if ((0.5 * mapW * 50 * 1.3 <= xpos && xpos <= 0.5 * mapW * 50 * 1.7) && (10 <= ypos && ypos <= 55)) {
             printf("Right button\n");
+            for (int k = 0; k < 10; k++) {
+                for (int i = 0; i < mapW; i++) {
+                    for (int j = 0; j < mapH; j++) {
+                        if (Help(i, j))
+                            break;
+                    }
+                }
+            }
         }
     }
     else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
@@ -250,6 +264,11 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         /*if (IsCellInMap(x, y) && map[x][y].open == 1) {
             Help(x, y);
         }*/
+    }
+    else if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_PRESS) {
+        if (IsCellInMap(x, y) && map[x][y].open == 1) {
+            Help(x, y);
+        }
     }
 }
 
@@ -323,14 +342,26 @@ void Menu_Show() {
 }
 
 int Help(int x, int y) {
+    printf("Help function\n");
     if (!IsCellInMap(x, y)) return 0;
     if (map[x][y].cntAround == count_open(x, y) && map[x][y].open == 1) {
-        printf("Help function\n");
         for (int dx = -1; dx < 2; dx++) {
             for (int dy = -1; dy < 2; dy++) {
                 if (IsCellInMap(x + dx, y + dy)) {
                     if (map[x + dx][y + dy].open == 0 && map[x + dx][y + dy].flag == 0) {
                         map[x + dx][y + dy].flag = 1;
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    else if (map[x][y].cntAround == count_flag(x, y) && map[x][y].open == 1) {
+        for (int dx = -1; dx < 2; dx++) {
+            for (int dy = -1; dy < 2; dy++) {
+                if (IsCellInMap(x + dx, y + dy)) {
+                    if (map[x + dx][y + dy].open == 0 && map[x + dx][y + dy].flag == 0) {
+                        OpenFields(x + dx, y + dy);
                         return 1;
                     }
                 }
